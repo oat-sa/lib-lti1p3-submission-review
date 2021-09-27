@@ -29,6 +29,7 @@ use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\ForUserClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\LtiMessagePayload;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLink;
 use OAT\Library\Lti1p3Core\Tests\Traits\DomainTestingTrait;
 use OAT\Library\Lti1p3Core\Tool\Tool;
 use OAT\Library\Lti1p3SubmissionReview\Message\Launch\Builder\SubmissionReviewLaunchRequestBuilder;
@@ -92,6 +93,55 @@ class SubmissionReviewLaunchRequestBuilderTest extends TestCase
         $this->assertEquals('b', $payload->getClaim('a'));
     }
 
+    public function testLtiResourceLinkBuildSubmissionReviewLaunchRequestSuccess(): void
+    {
+        $ltiResourceLink = new LtiResourceLink(
+            'resourceLinkIdentifier',
+            [
+                'url' => 'http://tool.com/resource-link-submission-review-url'
+            ]
+        );
+        $agsClaim = $this->createTestAgsClaim();
+        $forUserClaim = $this->createTestForUserClaim();
+
+        $result = $this->subject->buildLtiResourceLinkSubmissionReviewLaunchRequest(
+            $ltiResourceLink,
+            $agsClaim,
+            $forUserClaim,
+            $this->registration,
+            'loginHint',
+            'http://tool.com/submission-review-url',
+            null,
+            [
+                'Instructor'
+            ],
+            [
+                'a' => 'b'
+            ]
+        );
+
+        $this->assertInstanceOf(LtiMessageInterface::class, $result);
+
+        $this->assertEquals(
+            'http://tool.com/resource-link-submission-review-url',
+            $result->getParameters()->getMandatory('target_link_uri')
+        );
+
+        $ltiMessageHintToken = $this->parseJwt($result->getParameters()->getMandatory('lti_message_hint'));
+
+        $this->assertTrue(
+            $this->verifyJwt($ltiMessageHintToken, $this->registration->getPlatformKeyChain()->getPublicKey())
+        );
+
+        $payload = new LtiMessagePayload($ltiMessageHintToken);
+
+        $this->assertEquals($ltiResourceLink->getIdentifier(), $payload->getResourceLink()->getIdentifier());
+        $this->assertEquals($agsClaim->getLineItemUrl(), $payload->getAgs()->getLineItemUrl());
+        $this->assertEquals($forUserClaim->getIdentifier(), $payload->getForUser()->getIdentifier());
+        $this->assertEquals(['Instructor'], $payload->getRoles());
+        $this->assertEquals('b', $payload->getClaim('a'));
+    }
+
     public function testBuildSubmissionReviewLaunchRequestFailureOnMissingAgsLineItemUrl(): void
     {
         $agsClaim = $this->createTestAgsClaim(null);
@@ -137,6 +187,37 @@ class SubmissionReviewLaunchRequestBuilderTest extends TestCase
         $this->expectExceptionMessage('Neither submission review url nor tool default url were presented');
 
         $this->subject->buildSubmissionReviewLaunchRequest(
+            $this->createTestAgsClaim(),
+            $this->createTestForUserClaim(),
+            $registration,
+            'loginHint'
+        );
+    }
+
+    public function testBuildLtiResourceLinkSubmissionReviewLaunchRequestFailureOnMissingLaunchUrl(): void
+    {
+        $tool = new Tool(
+            'toolIdentifier',
+            'toolName',
+            'toolAudience',
+            'http://tool.com/oidc-init'
+        );
+
+        $registration  = $this->createTestRegistration(
+            'registrationIdentifier',
+            'registrationClientId',
+            $this->createTestPlatform(),
+            $tool,
+            ['deploymentIdentifier']
+        );
+
+        $ltiResourceLink = new LtiResourceLink('resourceLinkIdentifier');
+
+        $this->expectException(LtiExceptionInterface::class);
+        $this->expectExceptionMessage('Neither resource link url nor submission review url were presented');
+
+        $this->subject->buildLtiResourceLinkSubmissionReviewLaunchRequest(
+            $ltiResourceLink,
             $this->createTestAgsClaim(),
             $this->createTestForUserClaim(),
             $registration,

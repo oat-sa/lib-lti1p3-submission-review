@@ -29,7 +29,9 @@ use OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuild
 use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\ForUserClaim;
+use OAT\Library\Lti1p3Core\Message\Payload\Claim\ResourceLinkClaim;
 use OAT\Library\Lti1p3Core\Registration\RegistrationInterface;
+use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use Throwable;
 
 /**
@@ -56,7 +58,6 @@ class SubmissionReviewLaunchRequestBuilder extends PlatformOriginatingLaunchBuil
             }
 
             $this->builder
-                ->reset()
                 ->withClaim($agsClaim)
                 ->withClaim($forUserClaim);
 
@@ -85,5 +86,46 @@ class SubmissionReviewLaunchRequestBuilder extends PlatformOriginatingLaunchBuil
                 $exception
             );
         }
+    }
+
+    /**
+     * @throws LtiExceptionInterface
+     */
+    public function buildLtiResourceLinkSubmissionReviewLaunchRequest(
+        LtiResourceLinkInterface $ltiResourceLink,
+        AgsClaim $agsClaim,
+        ForUserClaim $forUserClaim,
+        RegistrationInterface $registration,
+        string $loginHint,
+        string $submissionReviewUrl = null,
+        string $deploymentId = null,
+        array $roles = [],
+        array $optionalClaims = []
+    ): LtiMessageInterface {
+
+        $this->builder->withClaim(
+            ResourceLinkClaim::denormalize([
+                'id' => $ltiResourceLink->getIdentifier(),
+                'title' => $ltiResourceLink->getTitle(),
+                'description' => $ltiResourceLink->getText(),
+            ])
+        );
+
+        $launchUrl = $ltiResourceLink->getUrl() ?? $submissionReviewUrl;
+
+        if (null === $launchUrl) {
+            throw new LtiException('Neither resource link url nor submission review url were presented');
+        }
+
+        return $this->buildSubmissionReviewLaunchRequest(
+            $agsClaim,
+            $forUserClaim,
+            $registration,
+            $loginHint,
+            $launchUrl,
+            $deploymentId,
+            $roles,
+            $optionalClaims
+        );
     }
 }
