@@ -22,7 +22,6 @@ declare(strict_types=1);
 
 namespace OAT\Library\Lti1p3SubmissionReview\Tests\Unit\Message\Launch\Builder;
 
-use OAT\Library\Lti1p3Ags\Service\Score\ScoreServiceInterface;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\LtiMessageInterface;
 use OAT\Library\Lti1p3Core\Message\Payload\Claim\AgsClaim;
@@ -229,7 +228,7 @@ class SubmissionReviewLaunchRequestBuilderTest extends TestCase
     {
         return new AgsClaim(
             [
-                ScoreServiceInterface::AUTHORIZATION_SCOPE_SCORE
+                'https://purl.imsglobal.org/spec/lti-ags/scope/score'
             ],
             'http://platform.com/lineitems',
             $lineItemUrl
