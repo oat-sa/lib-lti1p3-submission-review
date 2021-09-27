@@ -35,7 +35,7 @@ use OAT\Library\Lti1p3Core\Resource\LtiResourceLink\LtiResourceLinkInterface;
 use Throwable;
 
 /**
- * @see https://www.imsglobal.org/node/191951#ltisubmissionreviewrequest-claims
+ * @see https://www.imsglobal.org/spec/lti-sr/v1p0
  */
 class SubmissionReviewLaunchRequestBuilder extends PlatformOriginatingLaunchBuilder
 {
