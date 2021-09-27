@@ -6,7 +6,6 @@
 [![Tests Coverage Status](https://coveralls.io/repos/github/oat-sa/lib-lti1p3-submission-review/badge.svg?branch=main)](https://coveralls.io/github/oat-sa/lib-lti1p3-submission-review?branch=main)
 [![Psalm Level Status](https://shepherd.dev/github/oat-sa/lib-lti1p3-submission-review/level.svg)](https://shepherd.dev/github/oat-sa/lib-lti1p3-submission-review)
 [![Packagist Downloads](http://img.shields.io/packagist/dt/oat-sa/lib-lti1p3-submission-review.svg)](https://packagist.org/packages/oat-sa/lib-lti1p3-submission-review)
-[![IMS Certified](https://img.shields.io/badge/IMS-certified-brightgreen)](https://site.imsglobal.org/certifications/open-assessment-technologies-sa/tao-lti-13-devkit)
 
 > PHP library for [LTI 1.3 Submission Review Service](https://www.imsglobal.org/spec/lti-sr/v1p0) implementations as [platforms and / or as tools](http://www.imsglobal.org/spec/lti/v1p3/#platforms-and-tools), based on [LTI 1.3 Core library](https://github.com/oat-sa/lib-lti1p3-core).
 
