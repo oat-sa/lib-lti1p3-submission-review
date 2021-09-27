@@ -8,7 +8,7 @@
 [![Packagist Downloads](http://img.shields.io/packagist/dt/oat-sa/lib-lti1p3-submission-review.svg)](https://packagist.org/packages/oat-sa/lib-lti1p3-submission-review)
 [![IMS Certified](https://img.shields.io/badge/IMS-certified-brightgreen)](https://site.imsglobal.org/certifications/open-assessment-technologies-sa/tao-lti-13-devkit)
 
-> PHP library for [LTI 1.3 Submission Review Service](https://www.imsglobal.org/spec/lti-sr/v1p0) implementations as [platforms and / or as tools](http://www.imsglobal.org/spec/lti/v1p3/#platforms-and-tools), based on [LTI 1.3 AGS library](https://github.com/oat-sa/lib-lti1p3-ags) and [LTI 1.3 Core library](https://github.com/oat-sa/lib-lti1p3-core).
+> PHP library for [LTI 1.3 Submission Review Service](https://www.imsglobal.org/spec/lti-sr/v1p0) implementations as [platforms and / or as tools](http://www.imsglobal.org/spec/lti/v1p3/#platforms-and-tools), based on [LTI 1.3 Core library](https://github.com/oat-sa/lib-lti1p3-core).
 
 # Table of contents
 
@@ -29,7 +29,6 @@ You can find below [IMS](https://www.imsglobal.org/) related information.
 ### Related specifications
 
 - [IMS LTI Submission Review Service](https://www.imsglobal.org/spec/lti-sr/v1p0)
-- [IMS LTI Assignment and Grade Services](https://www.imsglobal.org/spec/lti-ags/v2p0)
 - [IMS LTI 1.3 Core](http://www.imsglobal.org/spec/lti/v1p3)
 - [IMS Security](https://www.imsglobal.org/spec/security/v1p0)
 
@@ -46,6 +45,10 @@ You can find below the library documentation, presented by topics.
 ### Quick start
 
 - how to [configure the underlying LTI 1.3 Core library](https://github.com/oat-sa/lib-lti1p3-core#quick-start)
+
+### Messages
+
+- how to [implement the submission review message workflow (as platform and / or tool)](doc/message/submission-review-workflow.md)
 
 ## Tests
 
