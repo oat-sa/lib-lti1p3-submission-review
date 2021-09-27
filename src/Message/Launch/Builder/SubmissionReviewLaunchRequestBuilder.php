@@ -22,6 +22,7 @@ declare(strict_types=1);
 
 namespace OAT\Library\Lti1p3SubmissionReview\Message\Launch\Builder;
 
+use InvalidArgumentException;
 use OAT\Library\Lti1p3Core\Exception\LtiException;
 use OAT\Library\Lti1p3Core\Exception\LtiExceptionInterface;
 use OAT\Library\Lti1p3Core\Message\Launch\Builder\PlatformOriginatingLaunchBuilder;
@@ -50,6 +51,10 @@ class SubmissionReviewLaunchRequestBuilder extends PlatformOriginatingLaunchBuil
         array $optionalClaims = []
     ): LtiMessageInterface {
         try {
+            if (null === $agsClaim->getLineItemUrl()) {
+                throw new InvalidArgumentException('Missing line item url from AGS claim');
+            }
+
             $this->builder
                 ->reset()
                 ->withClaim($agsClaim)
