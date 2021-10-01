@@ -193,37 +193,6 @@ class SubmissionReviewLaunchRequestBuilderTest extends TestCase
         );
     }
 
-    public function testBuildLtiResourceLinkSubmissionReviewLaunchRequestFailureOnMissingLaunchUrl(): void
-    {
-        $tool = new Tool(
-            'toolIdentifier',
-            'toolName',
-            'toolAudience',
-            'http://tool.com/oidc-init'
-        );
-
-        $registration  = $this->createTestRegistration(
-            'registrationIdentifier',
-            'registrationClientId',
-            $this->createTestPlatform(),
-            $tool,
-            ['deploymentIdentifier']
-        );
-
-        $ltiResourceLink = new LtiResourceLink('resourceLinkIdentifier');
-
-        $this->expectException(LtiExceptionInterface::class);
-        $this->expectExceptionMessage('Neither resource link url nor submission review url were presented');
-
-        $this->subject->buildLtiResourceLinkSubmissionReviewLaunchRequest(
-            $ltiResourceLink,
-            $this->createTestAgsClaim(),
-            $this->createTestForUserClaim(),
-            $registration,
-            'loginHint'
-        );
-    }
-
     private function createTestAgsClaim(?string $lineItemUrl = 'http://platform.com/lineitems/1'): AgsClaim
     {
         return new AgsClaim(
