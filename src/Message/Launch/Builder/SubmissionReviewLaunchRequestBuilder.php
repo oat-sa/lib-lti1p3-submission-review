@@ -113,10 +113,6 @@ class SubmissionReviewLaunchRequestBuilder extends PlatformOriginatingLaunchBuil
 
         $launchUrl = $ltiResourceLink->getUrl() ?? $submissionReviewUrl;
 
-        if (null === $launchUrl) {
-            throw new LtiException('Neither resource link url nor submission review url were presented');
-        }
-
         return $this->buildSubmissionReviewLaunchRequest(
             $agsClaim,
             $forUserClaim,
