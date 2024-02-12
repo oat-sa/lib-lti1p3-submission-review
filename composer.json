@@ -10,7 +10,7 @@
     },
     "require-dev": {
         "lcobucci/jwt": "^4.3",
-        "nesbot/carbon": "^2.72",
+        "nesbot/carbon": "^2.72 || ^3.0",
         "nyholm/psr7": "^1.8",
         "php-coveralls/php-coveralls": "^2.4",
         "phpunit/phpunit": "^9.6",
