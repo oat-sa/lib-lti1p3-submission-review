@@ -6,8 +6,14 @@
     "require": {
         "ext-json": "*",
         "php": ">=8.0.0",
-        "oat-sa/lib-lti1p3-core": "^7.0"
+        "oat-sa/lib-lti1p3-core": "dev-lcobucci-jwt-5.0-support as 7.2.2"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/armatronic/lib-lti1p3-core"
+        }
+    ],
     "require-dev": {
         "lcobucci/jwt": "^4.3",
         "nesbot/carbon": "^2.72 || ^3.0",
